@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity implements
 
     private static final String SCROLL_LIST_POSITION = "SCROLL_LIST_POSITION";
     private static final String TRACK_PLAYING_POSITION = "TRACK_PLAYING_POSITION";
-    private static final String SONG_LIST = "SONG_LIST";
+    private static final String TRACK_LIST = "TRACK_LIST";
     private static final String PHASE_PLAY = "PHASE_PLAY";
     private static final String PHASE_RECORD = "PHASE_RECORD";
     private static final String PHASE_CONVERT = "PHASE_CONVERT";
@@ -158,10 +158,9 @@ public class MainActivity extends FragmentActivity implements
                 case PLAY_GET_AUDIO_TRACK_INFO:
                     List<Map<String, Object>> trackList = null;
                     if (bundle.getSerializable(EVENT_PLAY_TRACK_INFO) != null) {
-                        trackList = ((AudioPlayList) (bundle.getSerializable(
-                                EVENT_PLAY_TRACK_INFO
-                        ))).getList();
+                        trackList = ((AudioPlayList) (bundle.getSerializable(EVENT_PLAY_TRACK_INFO))).getList();
                     }
+
                     MainActivity.this.trackList.clear();
                     if (trackList == null) return;
                     for (Map<String, Object> map : trackList) {
@@ -207,7 +206,7 @@ public class MainActivity extends FragmentActivity implements
             trackList = new AudioPlayList();
         } else {
             listScrollPosition = savedInstanceState.getInt(SCROLL_LIST_POSITION);
-            trackList = (AudioPlayList) (savedInstanceState.getSerializable(SONG_LIST));
+            trackList = (AudioPlayList) (savedInstanceState.getSerializable(TRACK_LIST));
             phaseBtnConvert = savedInstanceState.getBoolean(PHASE_CONVERT);
             phaseBtnPlay = savedInstanceState.getBoolean(PHASE_PLAY);
             phaseBtnRecord = savedInstanceState.getBoolean(PHASE_RECORD);
@@ -276,7 +275,7 @@ public class MainActivity extends FragmentActivity implements
     {
         outState.putInt(SCROLL_LIST_POSITION, listScrollPosition);
         outState.putInt(TRACK_PLAYING_POSITION, trackAdapter.getHighlightedItemPosition());
-        outState.putSerializable(SONG_LIST, trackList);
+        outState.putSerializable(TRACK_LIST, trackList);
         outState.putBoolean(PHASE_CONVERT, phaseBtnConvert);
         outState.putBoolean(PHASE_RECORD, phaseBtnRecord);
         outState.putBoolean(PHASE_PLAY, phaseBtnPlay);

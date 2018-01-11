@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -105,7 +106,7 @@ public class FragmentConvert extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_convert, container, false);
@@ -129,7 +130,6 @@ public class FragmentConvert extends Fragment implements View.OnClickListener, A
             case R.id.btnConverConfig:
                 boolean isConfigClicked = !fragmentState.getBoolean(IS_CONFIG_BTN_CLICKED);
                 fragmentState.putBoolean(IS_CONFIG_BTN_CLICKED, isConfigClicked);
-
                 if (isConfigClicked) {
                     changeVisibility(fragmentState);
                     highlightedEncBtn(fragmentState.getInt(CHOSEN_CONFIG_BTN));
@@ -161,7 +161,7 @@ public class FragmentConvert extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
+    public void onSaveInstanceState(@NonNull Bundle outState)
     {
         fragmentState.putString(WAV_FILE_PATH, wavFile);
         fragmentState.putSerializable(CONVERT_PARAM, convertParam);
@@ -293,9 +293,12 @@ public class FragmentConvert extends Fragment implements View.OnClickListener, A
 
     private void onConvertClick()
     {
+        Context context = getActivity().getApplicationContext();
+        if (context == null) return;
+
         if (wavFile.isEmpty()) {
             Toast.makeText(
-                    getActivity().getApplicationContext(),
+                    context,
                     getString(R.string.msg_err_convert_no_input),
                     Toast.LENGTH_SHORT
             ).show();
@@ -304,7 +307,7 @@ public class FragmentConvert extends Fragment implements View.OnClickListener, A
 
         if (!Utils.isWAVFile(wavFile)) {
             Toast.makeText(
-                    getActivity().getApplicationContext(),
+                    context,
                     getString(R.string.msg_err_convert_not_wav),
                     Toast.LENGTH_SHORT
             ).show();

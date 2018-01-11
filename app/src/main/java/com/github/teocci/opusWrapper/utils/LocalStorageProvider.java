@@ -27,15 +27,14 @@ import java.io.IOException;
  *
  * @author teocci@yandex.com on 2018-Jan-08
  */
-
-public class LocalStorageProvider extends DocumentsProvider {
-
+public class LocalStorageProvider extends DocumentsProvider
+{
     public static final String AUTHORITY = "com.github.teocci.opusWrapper.documents";
 
     /**
      * Default root projection: everything but Root.COLUMN_MIME_TYPES
      */
-    private final static String[] DEFAULT_ROOT_PROJECTION = new String[] {
+    private final static String[] DEFAULT_ROOT_PROJECTION = new String[]{
             Root.COLUMN_ROOT_ID,
             Root.COLUMN_FLAGS,
             Root.COLUMN_TITLE,
@@ -43,11 +42,12 @@ public class LocalStorageProvider extends DocumentsProvider {
             Root.COLUMN_ICON,
             Root.COLUMN_AVAILABLE_BYTES
     };
+
     /**
      * Default document projection: everything but Document.COLUMN_ICON and
      * Document.COLUMN_SUMMARY
      */
-    private final static String[] DEFAULT_DOCUMENT_PROJECTION = new String[] {
+    private final static String[] DEFAULT_DOCUMENT_PROJECTION = new String[]{
             Document.COLUMN_DOCUMENT_ID,
             Document.COLUMN_DISPLAY_NAME,
             Document.COLUMN_FLAGS,
@@ -57,7 +57,8 @@ public class LocalStorageProvider extends DocumentsProvider {
     };
 
     @Override
-    public Cursor queryRoots(final String[] projection) throws FileNotFoundException {
+    public Cursor queryRoots(final String[] projection) throws FileNotFoundException
+    {
         // Create a cursor with either the requested fields, or the default
         // projection if "projection" is null.
         final MatrixCursor result = new MatrixCursor(projection != null ? projection
@@ -82,7 +83,8 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public String createDocument(final String parentDocumentId, final String mimeType,
-                                 final String displayName) throws FileNotFoundException {
+                                 final String displayName) throws FileNotFoundException
+    {
         File newFile = new File(parentDocumentId, displayName);
         try {
             newFile.createNewFile();
@@ -95,7 +97,8 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public AssetFileDescriptor openDocumentThumbnail(final String documentId, final Point sizeHint,
-                                                     final CancellationSignal signal) throws FileNotFoundException {
+                                                     final CancellationSignal signal) throws FileNotFoundException
+    {
         // Assume documentId points to an image file. Build a thumbnail no
         // larger than twice the sizeHint
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -117,6 +120,7 @@ public class LocalStorageProvider extends DocumentsProvider {
                 options.inSampleSize *= 2;
             }
         }
+
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(documentId, options);
         // Write out the thumbnail to a temporary file
@@ -141,14 +145,17 @@ public class LocalStorageProvider extends DocumentsProvider {
         // aggressively so there is little reason to
         // write your own caching layer beyond what you need to return a single
         // AssetFileDescriptor
-        return new AssetFileDescriptor(ParcelFileDescriptor.open(tempFile,
-                ParcelFileDescriptor.MODE_READ_ONLY), 0,
-                AssetFileDescriptor.UNKNOWN_LENGTH);
+        return new AssetFileDescriptor(
+                ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY),
+                0,
+                AssetFileDescriptor.UNKNOWN_LENGTH
+        );
     }
 
     @Override
     public Cursor queryChildDocuments(final String parentDocumentId, final String[] projection,
-                                      final String sortOrder) throws FileNotFoundException {
+                                      final String sortOrder) throws FileNotFoundException
+    {
         // Create a cursor with either the requested fields, or the default
         // projection if "projection" is null.
         final MatrixCursor result = new MatrixCursor(projection != null ? projection
@@ -166,7 +173,8 @@ public class LocalStorageProvider extends DocumentsProvider {
 
     @Override
     public Cursor queryDocument(final String documentId, final String[] projection)
-            throws FileNotFoundException {
+            throws FileNotFoundException
+    {
         // Create a cursor with either the requested fields, or the default
         // projection if "projection" is null.
         final MatrixCursor result = new MatrixCursor(projection != null ? projection
@@ -176,15 +184,15 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     private void includeFile(final MatrixCursor result, final File file)
-            throws FileNotFoundException {
+            throws FileNotFoundException
+    {
         final MatrixCursor.RowBuilder row = result.newRow();
         // These columns are required
         row.add(Document.COLUMN_DOCUMENT_ID, file.getAbsolutePath());
         row.add(Document.COLUMN_DISPLAY_NAME, file.getName());
         String mimeType = getDocumentType(file.getAbsolutePath());
         row.add(Document.COLUMN_MIME_TYPE, mimeType);
-        int flags = file.canWrite() ? Document.FLAG_SUPPORTS_DELETE | Document.FLAG_SUPPORTS_WRITE
-                : 0;
+        int flags = file.canWrite() ? Document.FLAG_SUPPORTS_DELETE | Document.FLAG_SUPPORTS_WRITE : 0;
         // We only show thumbnails for image files - expect a call to
         // openDocumentThumbnail for each file that has
         // this flag set
@@ -196,14 +204,13 @@ public class LocalStorageProvider extends DocumentsProvider {
         // These columns are optional
         row.add(Document.COLUMN_LAST_MODIFIED, file.lastModified());
         // Document.COLUMN_ICON can be a resource id identifying a custom icon.
-        // The system provides default icons
-        // based on mime type
-        // Document.COLUMN_SUMMARY is optional additional information about the
-        // file
+        // The system provides default icons based on mime type
+        // Document.COLUMN_SUMMARY is optional additional information about the file
     }
 
     @Override
-    public String getDocumentType(final String documentId) throws FileNotFoundException {
+    public String getDocumentType(final String documentId) throws FileNotFoundException
+    {
         File file = new File(documentId);
         if (file.isDirectory())
             return Document.MIME_TYPE_DIR;
@@ -220,13 +227,18 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     @Override
-    public void deleteDocument(final String documentId) throws FileNotFoundException {
+    public void deleteDocument(final String documentId) throws FileNotFoundException
+    {
         new File(documentId).delete();
     }
 
     @Override
-    public ParcelFileDescriptor openDocument(final String documentId, final String mode,
-                                             final CancellationSignal signal) throws FileNotFoundException {
+    public ParcelFileDescriptor openDocument(
+            final String documentId,
+            final String mode,
+            final CancellationSignal signal
+    ) throws FileNotFoundException
+    {
         File file = new File(documentId);
         final boolean isWrite = (mode.indexOf('w') != -1);
         if (isWrite) {
@@ -237,7 +249,8 @@ public class LocalStorageProvider extends DocumentsProvider {
     }
 
     @Override
-    public boolean onCreate() {
+    public boolean onCreate()
+    {
         return true;
     }
 }

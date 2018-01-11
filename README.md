@@ -11,7 +11,7 @@ This is an Android library transplanted from official [Opus codec][1]. With this
 
 ### OpusLib codes
 
-This project is based on Opus source code, Opus-tools, and Opusfile. Opus-tools provides command-line utilities to encode, inspect, and decode .opus files. Opusfile provides application developers with a high-level API for decoding and seeking in .opus files.
+This project is based on Opus source code, Opus-tools, and Opusfile. Opus-tools provides command-line utilities to encode, inspect, and decode `.opus` files. Opusfile provides application developers with a high-level API for decoding and seeking in `.opus` files.
 The java implements an OpusService, this is the highest level interface. It's a background Server running automatically. All you need to do is sending Intents to it, and receiving the feedback messages through a Broadcast Receiver. The approach is recommended over the Method 2.
 
 #### Sending message.
