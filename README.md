@@ -75,19 +75,19 @@ class OpusReceiver extends BroadcastReceiver {
 
 
 ### How to use the OpusLib codes
-- Encode and Decode
+* Encode and Decode
 ```
 OpusTool oTool = new OpusTool();
 oTool.decode(fileName,fileNameOut, null);
 oTool.encode(fileName, fileNameOut, null);
 ```
-- Playback
+* Playback
 ```
 OpusPlayer opusPlayer = OpusPlayer.getInstance();
 opusPlayer.play(fileName);
 opusPlayer.stop();
 ```
-- Record
+* Record
 ```
 OpusRecorder opusRecorder = OpusRecorder.getInstance();
 opusRecorder.startRecording(fileName);
@@ -96,18 +96,18 @@ opusRecorder.stopRecording();
 
 ### Pre-requisites
 
-1.	JDK v1.8 or higher  
-2.	SDK v2.2.1 or higher  
-3.	NDK  r10d or higher (Note: remember to export NDK's path) 
-4.	Android Studio (with SDK) 1.2.1 or higher
+1. JDK v1.8 or higher  
+2. SDK v2.2.1 or higher  
+3. NDK r10d or higher (Note: remember to export NDK's path) 
+4. Android Studio (with SDK) 1.2.1 or higher
 
 ## Credits
 
 This project was based on a Java interface to OpenCV called **JavaCV**.
 
-- [Opus][2]
-- [Opus-tools][3]
-- [Opusfile][4]
+* [Opus][2]
+* [Opus-tools][3]
+* [Opusfile][4]
 
 
 ## License
